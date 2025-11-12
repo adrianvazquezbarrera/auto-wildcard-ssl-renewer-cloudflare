@@ -25,5 +25,5 @@ cp /etc/letsencrypt/live/"${PRIMARY_DOMAIN}"/privkey.pem /certificates/"${PRIMAR
 # Create alsocertificate.yml file for use with traeffik
 echo "tls:" > /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
 echo "  certificates:" >> /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
-echo "    - certFile: ${BASE_CERT_PATH}/chain.crt" >> /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
-echo "      keyFile: ${BASE_CERT_PATH}/privkey.key" >> /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
+echo "    - certFile: ${BASE_CERT_PATH}/${PRIMARY_DOMAIN}/chain.crt" >> /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
+echo "      keyFile: ${BASE_CERT_PATH}/${PRIMARY_DOMAIN}/privkey.key" >> /certificates/"${PRIMARY_DOMAIN}"/certificate.yml
