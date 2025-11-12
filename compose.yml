@@ -2,8 +2,13 @@ services:
   certbot:
     build: .
     container_name: certbot
-    env_file:
-      - .env
+    environment:
+      - CLOUDFLARE_API_TOKEN
+      - PRIMARY_DOMAIN
+      - DOMAIN
+      - EMAIL
+      - BASE_CERT_PATH
+
     volumes:
       - ./letsencrypt:/etc/letsencrypt
       - ./certificates:/certificates
