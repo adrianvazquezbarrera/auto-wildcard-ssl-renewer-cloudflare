@@ -37,25 +37,7 @@ git clone https://github.com/adrianvazquezbarrera/auto-wildcard-ssl-renewer-clou
 cd auto-wildcard-ssl-renewer-cloudflare
 ```
 
-### 2. Configure Environment Variables
-
-Create a `.env` file in the project root with the following variables:
-
-```env
-# Cloudflare API token (requires DNS:Edit permissions)
-CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
-
-# Domain to obtain certificate for (including wildcard)
-DOMAIN=*.example.com
-
-# Primary domain (without wildcard)
-PRIMARY_DOMAIN=example.com
-
-# Base path for certificates (used in Traefik configuration)
-BASE_CERT_PATH=/certificates/example.com
-```
-
-#### Getting Your Cloudflare API Token
+### 2. Getting Your Cloudflare API Token
 
 1. Log in to your Cloudflare account
 2. Go to **My Profile** → **API Tokens**
@@ -65,7 +47,16 @@ BASE_CERT_PATH=/certificates/example.com
    - Zone Resources: Include your specific zone
 5. Copy the generated token to your `.env` file
 
-### 3. Run the Certificate Request Script
+### 3. Export Environment Variables
+
+```bash
+export CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
+export DOMAIN=*.example.com
+export PRIMARY_DOMAIN=example.com
+export BASE_CERT_PATH=/certificates/example.com
+```
+
+### 4. Run the Certificate Request Script
 
 ```bash
 ./request-certificate.sh
