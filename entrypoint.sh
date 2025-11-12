@@ -13,6 +13,7 @@ certbot certonly \
 --dns-cloudflare-propagation-seconds 60 \
 -d "${DOMAIN}" \
 --non-interactive \
+--expand \
 --agree-tos \
 -m apps@adrianvb.com
 
