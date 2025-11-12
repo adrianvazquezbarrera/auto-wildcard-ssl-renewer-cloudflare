@@ -1,0 +1,9 @@
+services:
+  certbot:
+    build: .
+    container_name: certbot
+    env_file:
+      - .env
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certificates:/certificates
