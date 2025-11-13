@@ -157,6 +157,8 @@ The utility generates a `certificate.yml` file in the certificates directory, wh
       echo "*.private.example.com SSL updated!"
     ```
 
+Caveat: When setting a domain in the `Projects` -> `<Your Project Name>` -> `environment` -> `<Your application name>` -> `Domains`, make sure to select **HTTPS** and set the certificate provider to **None** since the SSL certificate will be managed by .crt and .key files.
+
 ## 🛠️ Troubleshooting
 
 ### Certificate Request Fails
@@ -189,6 +191,14 @@ The utility generates a `certificate.yml` file in the certificates directory, wh
 - Verify environment variables in `.env` file
 - Ensure the `PRIMARY_DOMAIN` matches your certificate's common name
 
+### Certificate Overwrite Issues
+
+If you tried to use SSL earlier with the default Dokploy setup, probably you will now encounter SSL errors, since both certificates may conflict.
+
+If you face this issue, carefully remove the previously set SSL, they are available here: `Home` -> `Traefik File System` -> `dynamic` -> `acme.json`.
+
+**WARNING**: Be cautious when deleting certificates from `acme.json`, as it contains also the SSL certificates for the main dokploy app. Deleting it may break your Traefik instance, preventing access to your applications.
+
 ## 📝 Environment Variables Reference
 
 | Variable               | Description                                              | Example                                        |
@@ -211,7 +221,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## ⚠️ Warnings
 
 **Note**: This tool uses Let's Encrypt's production servers. Be aware of [Let's Encrypt's rate limits](https://letsencrypt.org/docs/rate-limits/) when testing.
-
-```
-
-```
