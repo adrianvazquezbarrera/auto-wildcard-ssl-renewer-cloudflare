@@ -47,7 +47,7 @@ cd auto-wildcard-ssl-renewer-cloudflare
 4. Use the **Edit zone DNS** template or create a custom token with:
    - Permissions: `Zone` → `DNS` → `Edit`
    - Zone Resources: Include your specific zone
-5. Copy the generated token to your `.env` file
+5. Copy the generated token for use in the next step
 
 ### 3. Export Environment Variables
 
@@ -81,7 +81,6 @@ This script will:
 ├── Dockerfile               # Container image definition
 ├── entrypoint.sh           # Main certificate request logic
 ├── request-certificate.sh  # Convenience script to run the process
-├── .env                    # Environment variables (create this)
 ├── certificates/           # Generated SSL certificates
 │   └── <domain>/
 │       ├── certificate.yml # Traefik configuration
@@ -190,7 +189,7 @@ Caveat: When setting a domain in the `Projects` -> `<Your Project Name>` -> `env
 **Solution**:
 
 - Check Docker container logs: `docker logs certbot`
-- Verify environment variables in `.env` file
+- Verify environment variables are properly exported
 - Ensure the `PRIMARY_DOMAIN` matches your certificate's common name
 
 ### Certificate Overwrite Issues
