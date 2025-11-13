@@ -51,10 +51,12 @@ cd auto-wildcard-ssl-renewer-cloudflare
 
 ```bash
 export CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
-export DOMAIN=*.example.com
+export DOMAIN=*.example.com,example.com
 export PRIMARY_DOMAIN=example.com
 export BASE_CERT_PATH=/certificates/example.com
 ```
+
+**Note**: Your `PRIMARY_DOMAIN` should be the non-wildcard version of the first domain in your `DOMAIN` list.
 
 ### 4. Run the Certificate Request Script
 
@@ -112,6 +114,49 @@ crontab -e
 
 The utility generates a `certificate.yml` file in the certificates directory, which can be used with Traefik's dynamic configuration.
 
+## 🐳 Dokploy Integration
+
+1.  SSH into your dokploy server.
+2.  Clone this repository into the folowing path: `/etc/dokploy/auto-wildcard-ssl-renewer-cloudflare`
+3.  Create a symbolic link to the dokploy certificates directory:
+
+    ```bash
+    ln -sf /etc/dokploy/traefik/dynamic/certificates /etc/dokploy/auto-wildcard-ssl-renewer-cloudflare/certificates
+    ```
+
+    Now, the generated certificates will be directly available to dokploy's traefik setup. You can verify this by checking the files in Dokploy's dashboard: `Home` -> `Traefik File System` -> `dynamic` -> `certificates`.
+
+4.  Go to the dokploy dashboard and navigate to `Home` -> `Schedules` -> `Add Schedule`.
+
+5.  Set up a schedule to run the renewal script weekly:
+
+    - **Name**: SSL Certificate Renewal
+    - **Frequency**: Daily
+    - **Time**: 00:00 AM
+    - **Command**:
+
+    ```bash
+      #!/bin/sh
+      set -e
+
+      # Note: Cloudflare API token and email
+      # shouln't be hardcoded here. You are seeing
+      # this for demonstration purposes only.
+      # You should use system's environment variable management instead.
+      export CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
+      export EMAIL=your_email@example.com
+      export BASE_CERT_PATH=/etc/dokploy/traefik/dynamic/certificates
+
+      # We recommend you to set these environment variables here
+      # because they are scoped to this scheduled task only.
+      export PRIMARY_DOMAIN=private.example.com
+      export DOMAIN=*.private.example.com,*.example.com
+
+      /etc/dokploy/auto-wildcard-ssl-renewer-cloudflare/request-certificate.sh
+
+      echo "*.private.example.com SSL updated!"
+    ```
+
 ## 🛠️ Troubleshooting
 
 ### Certificate Request Fails
@@ -166,3 +211,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## ⚠️ Warnings
 
 **Note**: This tool uses Let's Encrypt's production servers. Be aware of [Let's Encrypt's rate limits](https://letsencrypt.org/docs/rate-limits/) when testing.
+
+```
+
+```
